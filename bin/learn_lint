@@ -1,0 +1,18 @@
+require 'yaml'
+require 'optparse'
+require 'pry'
+
+begin
+  require './lib/yaml_linter.rb'
+rescue LoadError
+  $: << File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
+  require '../lib/yaml_linter.rb'
+end
+
+failed = 0
+ARGV.each do|files|
+  lint = YamlLint.new(files)
+  failed = failed + lint.do_lint
+end
+puts 'Done' 
+exit failed
